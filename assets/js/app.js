@@ -24,10 +24,10 @@ import topbar from '../vendor/topbar'
 
 let Hooks = {}
 let liveSocket = null
-Hooks.Webcam = {  
+Hooks.Webcam = {
   mounted() {
     const constraints = { audio: true, video: true } // specify the media stream constraints
-    let LV = this;
+    let LV = this
     //request access to the user's camera
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -41,15 +41,14 @@ Hooks.Webcam = {
           }
           const mediaRecorder = new MediaRecorder(mediaStream, options) // create a new media recorder
 
-          mediaRecorder.ondataavailable = function (event) {            
-            if (event.data.size > 0) {               
-              let fileReader = new FileReader();
-              fileReader.onload = function() {              
-          
-                 LV.pushEvent('new_chunk',fileReader.result)
-              };
-              fileReader.readAsBinaryString(event.data);
-              
+          mediaRecorder.ondataavailable = function (event) {
+            if (event.data.size > 0) {
+              let fileReader = new FileReader()
+              fileReader.onload = function () {
+                LV.pushEvent('new_chunk', fileReader.result)
+              }
+              fileReader.readAsBinaryString(event.data)
+
               // LV.pushChunk(event.data)
               //  console.log(LV)
             }
@@ -61,34 +60,33 @@ Hooks.Webcam = {
       .catch(function (err) {
         console.log(err.name + ': ' + err.message) // handle the error
       })
-
   }
 }
 
 Hooks.VideoStream = {
-  mounted() {    
-    const videoElement = this.el  
-    const event_name = this.el.getAttribute("phx-key")  
-    const mediaSource = new MediaSource();
-    let sourceBuffer = null;
-    this.el.src = URL.createObjectURL(mediaSource);
+  mounted() {
+    const videoElement = this.el
+    const event_name = this.el.getAttribute('phx-key')
+    const mediaSource = new MediaSource()
+    let sourceBuffer = null
+    this.el.src = URL.createObjectURL(mediaSource)
 
-    mediaSource.addEventListener('sourceopen', function(e) {
-       sourceBuffer = mediaSource.addSourceBuffer("video/mp4");
+    mediaSource.addEventListener('sourceopen', function (e) {
+      sourceBuffer = mediaSource.addSourceBuffer('video/mp4')
       //sourceBuffer = mediaSource.addSourceBuffer('video/webm');
-    })    
-    videoElement.addEventListener("loadedmetadata",function(e){
-      videoElement.play();
-    } )
+    })
+    videoElement.addEventListener('loadedmetadata', function (e) {
+      videoElement.play()
+    })
 
-    this.handleEvent(event_name, function(data){      
+    this.handleEvent(event_name, function (data) {
       const string = data.value
-      const typedArray = new Uint8Array(string.length);
+      const typedArray = new Uint8Array(string.length)
 
       for (let i = 0; i < string.length; i++) {
-        typedArray[i] = string.charCodeAt(i);
+        typedArray[i] = string.charCodeAt(i)
       }
-       sourceBuffer.appendBuffer(typedArray)       
+      sourceBuffer.appendBuffer(typedArray)
     })
   }
 }
