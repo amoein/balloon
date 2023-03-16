@@ -8,8 +8,7 @@ config :balloon, BalloonWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :balloon, Balloon.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :balloon, Balloon.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false

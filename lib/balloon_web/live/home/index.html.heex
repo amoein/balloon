@@ -1,0 +1,7 @@
+<%!-- <.simple_form for={@form} id="web" phx-change="validate" phx-submit="save" phx-hook="Webcam">
+  <.input type="hidden" field={@form[:video_data]} name="video_data" value="" class="hidden" />
+</.simple_form> --%>
+
+<div id="user_video" phx-hook="Webcam" />
+
+<video id="user_stream" phx-key="video_chunks" phx-hook="VideoStream" autoplay/>

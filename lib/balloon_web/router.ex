@@ -17,7 +17,7 @@ defmodule BalloonWeb.Router do
   scope "/", BalloonWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", HomeLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
